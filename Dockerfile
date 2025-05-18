@@ -1,7 +1,7 @@
 FROM node:22-alpine as builder
 
 RUN apk add --no-cache git \
-	&& git clone --depth 1 --branch photos-v1.0.4 https://github.com/ente-io/ente.git /app \
+	&& git clone --depth 1 --branch photos-v1.0.10 https://github.com/ente-io/ente.git /app \
 	&& cd /app/web \
 	&& yarn install
 
