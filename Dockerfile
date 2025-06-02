@@ -1,7 +1,7 @@
 FROM node:22-alpine as builder
 
 RUN apk add --no-cache git \
-	&& git clone --depth 1 --branch photos-v1.0.10 https://github.com/ente-io/ente.git /app \
+	&& git clone --depth 1 --branch photos-v1.1.0 https://github.com/ente-io/ente.git /app \
 	&& cd /app/web \
 	&& yarn install
 
@@ -11,7 +11,7 @@ ARG NEXT_PUBLIC_ENTE_ALBUMS_ENDPOINT=albums.doesnot.exist.example.com
 WORKDIR /app/web
 RUN yarn build:photos
 
-FROM alpine:3.21
+FROM alpine:3.22
 
 WORKDIR /app
 COPY --from=builder /app/web/apps/photos/out .
