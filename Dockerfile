@@ -1,6 +1,6 @@
 FROM node:22-alpine as builder
 
-RUN apk add --no-cache git curl \
+RUN apk add --no-cache build-base git curl \
     && curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable --target wasm32-unknown-unknown \
 	&& git clone --depth 1 --branch photos-v1.2.28 https://github.com/ente-io/ente.git /app
 
