@@ -1,15 +1,17 @@
 FROM node:22-alpine as builder
 
-RUN apk add --no-cache git cargo \
-	&& git clone --depth 1 --branch photos-v1.2.28 https://github.com/ente-io/ente.git /app \
-	&& cd /app/web \
-	&& yarn install
+RUN apk add --no-cache git \
+    && curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable --target wasm32-unknown-unknown \
+	&& git clone --depth 1 --branch photos-v1.2.28 https://github.com/ente-io/ente.git /app
+
+ENV PATH="/root/.cargo/bin:${PATH}"
 
 ARG NEXT_PUBLIC_ENTE_ENDPOINT=ente.doesnot.exist.example.com
 ARG NEXT_PUBLIC_ENTE_ALBUMS_ENDPOINT=albums.doesnot.exist.example.com
 
 WORKDIR /app/web
-RUN yarn build:photos
+RUN yarn install \
+    && yarn build:photos
 
 FROM alpine:3.22
 
