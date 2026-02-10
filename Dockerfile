@@ -1,4 +1,4 @@
-FROM node:22-alpine as builder
+FROM node:23-alpine AS builder
 
 RUN apk add --no-cache build-base git curl \
     && curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable --target wasm32-unknown-unknown \
@@ -13,7 +13,7 @@ WORKDIR /app/web
 RUN yarn install \
     && yarn build:photos
 
-FROM alpine:3.22
+FROM alpine:3.23
 
 WORKDIR /app
 COPY --from=builder /app/web/apps/photos/out .
