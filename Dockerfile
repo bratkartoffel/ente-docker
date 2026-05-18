@@ -2,7 +2,7 @@ FROM node:23-alpine AS builder
 
 RUN apk add --no-cache build-base git curl \
     && curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable --target wasm32-unknown-unknown \
-	&& git clone --depth 1 --branch photos-v1.3.40 https://github.com/ente-io/ente.git /app
+    && git clone --depth 1 --branch photos-v1.3.40 https://github.com/ente-io/ente.git /app
 
 ENV PATH="/root/.cargo/bin:${PATH}"
 
@@ -10,7 +10,11 @@ ARG NEXT_PUBLIC_ENTE_ENDPOINT=ente.doesnot.exist.example.com
 ARG NEXT_PUBLIC_ENTE_ALBUMS_ENDPOINT=albums.doesnot.exist.example.com
 
 WORKDIR /app/web
-RUN yarn install \
+
+COPY wasm-pack-0.15.0.patch .
+
+RUN patch -p 2 -i wasm-pack-0.15.0.patch \
+    && yarn install \
     && yarn build:photos
 
 FROM alpine:3.23
