@@ -11,10 +11,7 @@ ARG NEXT_PUBLIC_ENTE_ALBUMS_ENDPOINT=albums.doesnot.exist.example.com
 
 WORKDIR /app/web
 
-COPY wasm-pack-0.15.0.patch .
-
-RUN patch -p 2 -i wasm-pack-0.15.0.patch \
-    && yarn install \
+RUN yarn install \
     && yarn build:photos
 
 FROM alpine:3.23
