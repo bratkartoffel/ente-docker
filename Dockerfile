@@ -11,10 +11,11 @@ ARG NEXT_PUBLIC_ENTE_ALBUMS_ENDPOINT=albums.doesnot.exist.example.com
 
 WORKDIR /app/web
 
-RUN yarn install \
-    && yarn build:photos
+RUN corepack enable \
+    && npm install \
+    && npm run build:photos
 
-FROM alpine:3.23
+FROM alpine:3.24
 
 WORKDIR /app
 COPY --from=builder /app/web/apps/photos/out .
